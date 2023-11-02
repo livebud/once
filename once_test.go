@@ -2,6 +2,7 @@ package once_test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/livebud/once"
@@ -48,4 +49,19 @@ func TestBytesError(t *testing.T) {
 	is.Equal(err.Error(), "oh noz")
 	is.Equal(called, 1)
 	is.Equal(res, []byte("1"))
+}
+
+func ExampleFunc() {
+	count := 0
+	fn := once.Func(func() (int, error) {
+		count++
+		return count, nil
+	})
+	res, err := fn()
+	fmt.Println(res, err)
+	res, err = fn()
+	fmt.Println(res, err)
+	// Output:
+	// 1 <nil>
+	// 1 <nil>
 }
